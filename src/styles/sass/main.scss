@@ -152,6 +152,15 @@ body {
   padding: 15px;
 }
 
+.settings {
+  color: white;
+  border-radius: 12px;
+  font-size: 1.8rem;
+  padding: 15px;
+  cursor: pointer;
+  background: #f9a826;
+}
+
 .next-btn {
   cursor: pointer;
   background: #f9a826;
@@ -193,6 +202,15 @@ body {
     font-size: 3.6rem;
     font-weight: 700;
   }
+}
+
+.inc-dec--btns {
+  background: #f9a826;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 12px;
+  margin: 12px;
 }
 
 .try-btn {

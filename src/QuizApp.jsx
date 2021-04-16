@@ -1,25 +1,25 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import resultsImg from './resources/undraw_winners_ao2o 2.svg';
-import quizImg from './resources/undraw_adventure_4hum 1.svg';
+import Playing from "./components/Playing/Playing";
+import Gameover from "./components/GameOver/Gameover";
 
 const QuizApp = () => {
-  let uniqNumsArr = [];
-  let shuffledArr = [];
+  const allCountriesURL = "https://restcountries.eu/rest/v2/all?fields=name;capital;flag";
   const [allCountries, setAllCountries] = useState('');
-  const allCountriesURL =
-  "https://restcountries.eu/rest/v2/all?fields=name;capital;flag";
   const [correct, setCorrect] = useState("Loading...");
   const [countries, setCountries] = useState("Loading..");
   const [isAnswered, setIsAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [question, setQuestion] = useState(false);
   const [round, setRound] = useState(1);
-  const [roundMax, setRoundMax] = useState(8);
   const [loading, setLoading] = useState(true);
+  const [roundMax, setRoundMax] = useState(8);
   const [error, setError] = useState('');
+  const [settings, setSettings] = useState(false);
   // TODO: Add 404 Error Render
-
+  
+  let uniqNumsArr = [];
+  let shuffledArr = [];
 
   function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -39,6 +39,16 @@ const QuizApp = () => {
 
   function shuffle(arr) {
     shuffledArr = [...arr].sort(() => Math.random() - 0.5);
+  }
+
+  function shuffleCountries() {
+    setCorrect(allCountries[uniqNumsArr[0]]);
+        setCountries({
+          1: allCountries[shuffledArr[0]],
+          2: allCountries[shuffledArr[1]],
+          3: allCountries[shuffledArr[2]],
+          4: allCountries[shuffledArr[3]],
+        });
   }
 
   function handleAnswerPick(e) {
@@ -70,22 +80,30 @@ const QuizApp = () => {
       listItem.classList.remove("right");
       listItem.classList.remove("wrong");
     }
-    genFourUniqNums();
-    shuffle(uniqNumsArr);
-    setCorrect(allCountries[uniqNumsArr[0]]);
-        setCountries({
-          1: allCountries[shuffledArr[0]],
-          2: allCountries[shuffledArr[1]],
-          3: allCountries[shuffledArr[2]],
-          4: allCountries[shuffledArr[3]],
-        });
+    shuffleCountries();
   }
   
   function handleTryAgain() {
     setIsAnswered(false);
     setScore(0);
     setRound(1);
+    shuffleCountries()
   }
+
+  function handleSettingsClick() {
+    return;
+    //todo
+  }
+
+  // function handleDecrementRounds() {
+  //   return;
+  //   //todo 
+  // }
+
+  // function handleIncrementRounds() {
+  //   return;
+  //   //todo
+  // }
 
   
   useEffect(() => {
@@ -110,107 +128,24 @@ const QuizApp = () => {
 
   return (
     <div className="quiz-app">
-      {round <= roundMax ? 
-      <div>
-        {loading ? (
-          <div className='loading-msg'>Loading...</div>
-        ) : (
-          <div className="main-wrapper">
-          <div className='img-header--wrapper'>
-            <h1 className='quiz-title'>Country Quiz</h1>
-            <img className='quiz-img' src={quizImg} alt='' />
-          </div>
-          <div className='quiz-wrapper'>
-            {question ? (
-              <div className='question-wrapper'>
-                <img className='flag-img' src={correct.flag} alt="country flag" />
-                <h2 className='question'>Which country does this flag belong to?</h2>
-              </div>
-            ) : (
-              <div className='question-wrapper'>
-                <h2 className='question' >{correct.capital} is the capital of...</h2>
-              </div>
-            )}
-
-            <ol className='answer-list'>
-              <li
-                id="1"
-                className="answer"
-                onClick={(e) => handleAnswerPick(e)}
-              >
-                <span>
-                  {countries[1].name}
-                </span>
-                <span className="material-icons nope">
-                  cancel
-                </span>
-                <span className="material-icons correct">
-                  check_circle
-                </span>
-             </li>
-              <li
-                id="2"
-                className="answer"
-                onClick={(e) => handleAnswerPick(e)}
-              >
-                <span>
-                  {countries[2].name}
-                </span>
-                <span className="material-icons nope">
-                  cancel
-                </span>
-                <span className="material-icons correct">
-                  check_circle
-                </span>
-              </li>
-              <li
-                id="3"
-                className="answer"
-                onClick={(e) => handleAnswerPick(e)}
-              >
-                <span>
-                  {countries[3].name}
-                </span>
-                <span className="material-icons nope">
-                  cancel
-                </span>
-                <span className="material-icons correct">
-                  check_circle
-                </span>
-              </li>
-              <li
-                id="4"
-                className="answer"
-                onClick={(e) => handleAnswerPick(e)}
-              >
-                <span>
-                  {countries[4].name}
-                </span>
-                <span className="material-icons nope">
-                  cancel
-                </span>
-                <span className="material-icons correct">
-                  check_circle
-                </span>
-              </li>
-            </ol>
-            <div className='round-next--wrapper'>
-            <div className='round'>Round: {round}/{roundMax}</div>
-            {isAnswered && <button className='next-btn' onClick={() => handleNext()}>Next</button>}
-            </div>
-          </div>
-          </div>
-        )}
-      </div>
-      : <div>
-          <h1 className='quiz-title'>Country Quiz</h1>
-          <div className='quiz-wrapper result-page'>
-            <img className='results-img' src={resultsImg} alt=''/>
-            <h2 className='results'>Results</h2>
-            <p className='score-sum'>You got <span>{score}/{roundMax}</span> answers correct</p>
-            <button className='try-btn' onClick={() => handleTryAgain()}>Try Again</button>
-          </div> 
-        </div>
+      {round <= roundMax  ? 
+      <Playing
+        loading={loading}
+        question={question}
+        correct={correct}
+        countries={countries}
+        handleAnswerPick={handleAnswerPick}
+        round={round}
+        roundMax={roundMax}
+        isAnswered={isAnswered}
+        handleNext={handleNext}
+        handleSettingsClick={handleSettingsClick}
+      />
+      : <Gameover
+          score={score}
+          roundMax={roundMax}
+          handleTryAgain={handleTryAgain}
+        />
       }
     <footer>created by Jacob Potvin - devChallenges.io</footer>
     </div>
