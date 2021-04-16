@@ -21,6 +21,11 @@ body {
   font-weight: 500;
 }
 
+.loading-msg {
+  text-align: center;
+  font-size: 5rem;
+}
+
 .main-wrapper {
   margin: 0 auto;
   width: 460px;

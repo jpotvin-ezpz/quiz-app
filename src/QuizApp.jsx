@@ -4,19 +4,22 @@ import resultsImg from './resources/undraw_winners_ao2o 2.svg';
 import quizImg from './resources/undraw_adventure_4hum 1.svg';
 
 const QuizApp = () => {
-  const allCountriesURL =
-    "https://restcountries.eu/rest/v2/all?fields=name;capital;flag";
   let uniqNumsArr = [];
   let shuffledArr = [];
-
+  const [allCountries, setAllCountries] = useState('');
+  const allCountriesURL =
+  "https://restcountries.eu/rest/v2/all?fields=name;capital;flag";
   const [correct, setCorrect] = useState("Loading...");
   const [countries, setCountries] = useState("Loading..");
   const [isAnswered, setIsAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [question, setQuestion] = useState(false);
   const [round, setRound] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
   const [roundMax, setRoundMax] = useState(8);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  // TODO: Add 404 Error Render
+
 
   function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -38,24 +41,6 @@ const QuizApp = () => {
     shuffledArr = [...arr].sort(() => Math.random() - 0.5);
   }
 
-  genFourUniqNums();
-  shuffle(uniqNumsArr);
-  useEffect(() => {
-    setIsLoading(true);
-    fetch(allCountriesURL)
-      .then((response) => response.json())
-      .then((data) => {
-        setCorrect(data[uniqNumsArr[0]]);
-        setCountries({
-          1: data[shuffledArr[0]],
-          2: data[shuffledArr[1]],
-          3: data[shuffledArr[2]],
-          4: data[shuffledArr[3]],
-        });
-        setIsLoading(false);
-      });
-  }, [round]);
-
   function handleAnswerPick(e) {
     if (isAnswered) return;
     if (countries[e.target.id] === correct) {
@@ -66,7 +51,7 @@ const QuizApp = () => {
     showCorrect();
     setIsAnswered(true);
   }
-
+  
   function showCorrect() {
     for (let i = 1; i < 5; i++) {
       if (countries[i] === correct) {
@@ -75,7 +60,7 @@ const QuizApp = () => {
       }
     }
   }
-
+  
   function handleNext() {
     setIsAnswered(false);
     setQuestion(!question);
@@ -85,20 +70,50 @@ const QuizApp = () => {
       listItem.classList.remove("right");
       listItem.classList.remove("wrong");
     }
+    genFourUniqNums();
+    shuffle(uniqNumsArr);
+    setCorrect(allCountries[uniqNumsArr[0]]);
+        setCountries({
+          1: allCountries[shuffledArr[0]],
+          2: allCountries[shuffledArr[1]],
+          3: allCountries[shuffledArr[2]],
+          4: allCountries[shuffledArr[3]],
+        });
   }
-
+  
   function handleTryAgain() {
     setIsAnswered(false);
     setScore(0);
     setRound(1);
   }
 
+  
+  useEffect(() => {
+    fetch(allCountriesURL)
+    .then((response) => response.json())
+    .then((data) => {
+      setCorrect(data[uniqNumsArr[0]]);
+      setCountries({
+        1: data[shuffledArr[0]],
+        2: data[shuffledArr[1]],
+        3: data[shuffledArr[2]],
+        4: data[shuffledArr[3]],
+      });
+      setAllCountries([...data])
+      setLoading(false);
+    });
+  }, [])
+  
+  
+  genFourUniqNums();
+  shuffle(uniqNumsArr);
+
   return (
     <div className="quiz-app">
-      {round < roundMax ? 
+      {round <= roundMax ? 
       <div>
-        {isLoading ? (
-          <div>Loading...</div>
+        {loading ? (
+          <div className='loading-msg'>Loading...</div>
         ) : (
           <div className="main-wrapper">
           <div className='img-header--wrapper'>
