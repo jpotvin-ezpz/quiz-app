@@ -129,7 +129,7 @@ const QuizApp = () => {
                 <span className="material-icons nope">
                   cancel
                 </span>
-                <span class="material-icons correct">
+                <span className="material-icons correct">
                   check_circle
                 </span>
              </li>
@@ -144,7 +144,7 @@ const QuizApp = () => {
                 <span className="material-icons nope">
                   cancel
                 </span>
-                <span class="material-icons correct">
+                <span className="material-icons correct">
                   check_circle
                 </span>
               </li>
@@ -159,7 +159,7 @@ const QuizApp = () => {
                 <span className="material-icons nope">
                   cancel
                 </span>
-                <span class="material-icons correct">
+                <span className="material-icons correct">
                   check_circle
                 </span>
               </li>
@@ -174,7 +174,7 @@ const QuizApp = () => {
                 <span className="material-icons nope">
                   cancel
                 </span>
-                <span class="material-icons correct">
+                <span className="material-icons correct">
                   check_circle
                 </span>
               </li>
