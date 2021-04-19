@@ -233,7 +233,7 @@ body {
 
 footer {
   position: relative;
-  top: 10vh;
+  top: 0;
   color: #f2f2f2;
   font-size: 1.4rem;
   text-align: center;
