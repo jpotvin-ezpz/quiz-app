@@ -60,6 +60,7 @@ body {
 
 .flag-img {
   width: 84px;
+  min-height: 56px;
 }
 
 .question {
@@ -174,13 +175,9 @@ body {
   border-radius: 12px;
 }
 
-.results-img--wrapper {
-  padding-bottom: (height ÷ width) x 100;
-}
-
 .results-img {
   width: 240px;
-  height: auto;
+  min-height: 137.15;
   margin: 50px auto;
 }
 

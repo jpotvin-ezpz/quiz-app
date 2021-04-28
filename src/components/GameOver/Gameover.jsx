@@ -6,9 +6,7 @@ function Gameover({score, roundMax, handleTryAgain}) {
     <div className='gameover'>
           <h1 className='quiz-title'>Country Quiz</h1>
           <div className='quiz-wrapper result-page'>
-            <div className='results-img--wrapper'>
               <img className='results-img' src={resultsImg} alt=''/>
-            </div>
             <h2 className='results'>Results</h2>
             <p className='score-sum'>You got <span>{score}/{roundMax}</span> answers correct</p>
             {/* 
